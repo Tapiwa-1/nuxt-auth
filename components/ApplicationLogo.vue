@@ -1,4 +1,3 @@
 <template>
-    <!-- <img src="../../img/logo.png" alt=""> -->
-    Logo
+    <img src="~/assets/logo.png" alt="" width="70" height="10">
 </template>
