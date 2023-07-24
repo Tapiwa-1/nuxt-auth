@@ -5,25 +5,21 @@ const $axios = axios().provide.axios
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
-    id:'',
-    name:'',
-    bio:'',
-    image:'',
-    post:null,
-    posts: null,
-    allLikes: 0,
-
+    id:1,
+    username:'tapiwa-1',
+    email:'tmotsi10@gmail.com',
+    
   }),
+  
   actions: {
     async getProfile(id) {
       
     },
     resetUser() {      
         this.$state.id = ''
-        this.$state.name = ''
-        this.$state.bio = ''
-        this.$state.image = ''
-        this.$state.posts = ''
+        this.$state.username = ''
+        this.$state.email = ''
+       
       }
   },
   persist: true,
