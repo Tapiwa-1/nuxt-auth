@@ -123,5 +123,3 @@ const showingNavigationDropdown = ref(false);
     </div>
 </template>
 
-<script setup>
-</script>

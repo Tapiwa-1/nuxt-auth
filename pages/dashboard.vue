@@ -4,9 +4,7 @@ useHead({
 })
 </script>
 <template>
-   
-
-    <AuthenticatedLayout>
+    <NuxtLayout name="authenticated-layout">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
@@ -18,5 +16,5 @@ useHead({
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </NuxtLayout>
 </template>
