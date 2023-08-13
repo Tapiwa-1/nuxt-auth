@@ -3,18 +3,30 @@ const { $axios } = useNuxtApp();
 useHead({
     title: 'Login',
 })
+const { $userStore, $generalStore } = useNuxtApp()
+const router = useRouter()
+
+let email = ref(null)
+let password = ref(null)
+let errors = ref(null)
+
 const login = async () => {
+    errors.value = null
+
     try {
-        await $axios.get('/sanctum/csrf-cookie')
-        await $axios.post('/login', {
-            email: 'test@example.com',
-            password: 'password'
-        })
+        $generalStore.isPoccessing = true
+        await $userStore.getTokens()
+        await $userStore.login(email.value, password.value)
+        $generalStore.isPoccessing = false
+        router.push('/dashboard')
+        // await $userStore.getUser()
 
     } catch (error) {
-        console.log(error)
+        $generalStore.isPoccessing = false
+        errors.value = error.response.data.errors
     }
 }
+
 </script>
 
 <template>
@@ -24,22 +36,23 @@ const login = async () => {
             {{ status }}
         </div>
 
-        <form>
+        <div>
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput id="email" type="email" class="mt-1 block w-full" required autofocus autocomplete="username" />
+                <TextInput id="email" type="email" class="mt-1 block w-full" v-model:model-value="email" required autofocus
+                    autocomplete="username" />
 
-                <InputError class="mt-2" message="form.errors.email" />
+                <InputError class="mt-2" :message="errors && errors.email ? errors.email[0] : ''" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />
 
-                <TextInput id="password" type="password" class="mt-1 block w-full" required
+                <TextInput id="password" type="password" v-model:model-value="password" class="mt-1 block w-full" required
                     autocomplete="current-password" />
 
-                <InputError class="mt-2" message="form.errors.password" />
+                <InputError class="mt-2" :message="errors && errors.password ? errors.password[0] : ''" />
             </div>
 
             <div class="block mt-4">
@@ -55,10 +68,11 @@ const login = async () => {
                     Forgot your password?
                 </NuxtLink>
 
-                <PrimaryButton @click="login()" class="ml-4" :class="{ 'opacity-25': true }">
+                <PrimaryButton @click="login()" class="ml-4">
+                    <Spinner v-if="$generalStore.isPoccessing" />
                     Log in
                 </PrimaryButton>
             </div>
-        </form>
+        </div>
     </GuestLayout>
 </template>

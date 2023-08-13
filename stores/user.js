@@ -5,13 +5,18 @@ const $axios = axios().provide.axios
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    id:1,
-    username:'tapiwa-1',
-    email:'tmotsi10@gmail.com',
+    id: '',
+    name: '',
+    bio: '',
+    image: ''
     
   }),
   
   actions: {
+    async getTokens() {
+      await $axios.get('/sanctum/csrf-cookie')
+    },
+
     async login(email, password) {
       await $axios.post('/login', {
         email: email,
