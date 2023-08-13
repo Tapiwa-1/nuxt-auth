@@ -3,6 +3,19 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 const { $profileStore } = useNuxtApp()
 const showingNavigationDropdown = ref(false);
+const { $userStore, $generalStore } = useNuxtApp()
+
+const route = useRoute()
+const router = useRouter()
+
+const logout = () => {
+    try {
+        $userStore.logout()
+        router.push('/')
+    } catch (error) {
+        console.log(error)
+    }
+}
 </script>
 
 <template>
@@ -38,7 +51,7 @@ const showingNavigationDropdown = ref(false);
                                         <span class="inline-flex rounded-md">
                                             <button type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                                {{ $profileStore.username }}
+                                                {{ $userStore.name }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20" fill="currentColor">
@@ -100,7 +113,7 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="'/profile/edit'"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="'/'" method="post" as="button">
+                            <ResponsiveNavLink @click="logout()" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>

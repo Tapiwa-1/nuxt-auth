@@ -33,13 +33,23 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    // async getUser() {
-    //   let res = await $axios.get('/api/logged-in-user')
-      
-    //   this.$state.id = res.data[0].id
-    //   this.$state.name = res.data[0].name
-    //
-    // },
+    async getUser() {
+      let res = await $axios.get('/api/logged-in-user')
+      this.$state.id = res.data[0].id
+      this.$state.name = res.data[0].name
+      this.$state.image = res.data[0].image
+    },
+    async logout() {
+      await $axios.post('/logout')
+      this.resetUser()
+    },
+
+    resetUser() {      
+      this.$state.id = ''
+      this.$state.name = ''
+      this.$state.email = ''
+      this.$state.image = ''
+    }
   },
   persist: true,
 })

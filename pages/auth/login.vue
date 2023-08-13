@@ -17,9 +17,9 @@ const login = async () => {
         $generalStore.isPoccessing = true
         await $userStore.getTokens()
         await $userStore.login(email.value, password.value)
+        await $userStore.getUser()
         $generalStore.isPoccessing = false
-        router.push('/dashboard')
-        // await $userStore.getUser()
+        router.push("/dashboard")
 
     } catch (error) {
         $generalStore.isPoccessing = false
