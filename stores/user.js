@@ -40,10 +40,10 @@ export const useUserStore = defineStore('user', {
       this.$state.image = res.data[0].image
     },
     async logout() {
+
       await $axios.post('/logout')
       this.resetUser()
     },
-
     resetUser() {      
       this.$state.id = ''
       this.$state.name = ''

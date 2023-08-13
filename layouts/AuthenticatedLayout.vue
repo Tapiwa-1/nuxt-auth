@@ -64,8 +64,8 @@ const logout = () => {
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="'profile/edit'"> Profile </DropdownLink>
-                                        <DropdownLink :href="'/'" method="post" as="button">
+                                        <DropdownLink :to="'profile/edit'"> Profile </DropdownLink>
+                                        <DropdownLink @click="logout()">
                                             Log Out
                                         </DropdownLink>
                                     </template>
@@ -113,7 +113,7 @@ const logout = () => {
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="'/profile/edit'"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink @click="logout()" method="post" as="button">
+                            <ResponsiveNavLink @click="logout()">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>
