@@ -7,7 +7,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     id: '',
     name: '',
-    bio: '',
+    email:'',
     image: ''
     
   }),
@@ -33,11 +33,19 @@ export const useUserStore = defineStore('user', {
       })
     },
 
+
     async getUser() {
       let res = await $axios.get('/api/logged-in-user')
       this.$state.id = res.data[0].id
       this.$state.name = res.data[0].name
+      this.$state.email = res.data[0].email
       this.$state.image = res.data[0].image
+    },
+    async updateProfile(name, email) {
+      await $axios.patch('api/update-user', {
+        name: name,
+        email: email
+      })
     },
     async logout() {
 

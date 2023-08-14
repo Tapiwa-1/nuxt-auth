@@ -5,10 +5,26 @@ const props = defineProps({
     mustVerifyEmail: Boolean,
     status: String,
 });
+const { $userStore, $generalStore } = useNuxtApp()
+let name = ref($userStore.name)
+let email = ref($userStore.email)
+
+let errors = ref(null)
 
 
+const updateProfile = async () => {
+    errors.value = null
 
-
+    try {
+        $generalStore.isPoccessing = true
+        await $userStore.updateProfile(name.value, email.value);
+        await $userStore.getUser();
+        $generalStore.isPoccessing = false;
+    } catch (error) {
+        $generalStore.isPoccessing = false
+        errors.value = error.response.data.errors
+    }
+}
 </script>
 
 <template>
@@ -21,23 +37,23 @@ const props = defineProps({
             </p>
         </header>
 
-        <form class="mt-6 space-y-6">
+        <div class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
 
-                <TextInput id="name" type="text" class="mt-1 block w-full" v-model:model-value="$profileStore.username"
-                    required autofocus autocomplete="name" />
+                <TextInput id="name" type="text" class="mt-1 block w-full" :placeholder="$userStore.name"
+                    v-model:model-value="name" required autofocus autocomplete="name" />
 
-                <InputError class="mt-2" message="form.errors.name" />
+                <InputError class="mt-2" :message="errors && errors.name ? errors.name[0] : ''" />
             </div>
 
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput id="email" type="email" class="mt-1 block w-full" v-model:model-value="$profileStore.email"
-                    required autocomplete="email" />
+                <TextInput id="email" type="email" class="mt-1 block w-full" :placeholder="$userStore.email"
+                    v-model:model-value="email" required autocomplete="email" />
 
-                <InputError class="mt-2" message="form.errors.email" />
+                <InputError class="mt-2" :message="errors && errors.email ? errors.email[0] : ''" />
             </div>
 
             <div v-if="true">
@@ -55,12 +71,13 @@ const props = defineProps({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton>Save</PrimaryButton>
+                <PrimaryButton @click="updateProfile()">Save</PrimaryButton>
 
-                <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                    <p class="text-sm text-gray-600">Saved.</p>
+                <Transition v-if="$generalStore.isPoccessing" enter-from-class="opacity-0" leave-to-class="opacity-0"
+                    class="transition ease-in-out">
+                    <p class="text-sm text-gray-600">Saving.</p>
                 </Transition>
             </div>
-        </form>
+        </div>
     </section>
 </template>
