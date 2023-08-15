@@ -5,20 +5,21 @@ const props = defineProps({
     mustVerifyEmail: Boolean,
     status: String,
 });
-const { $userStore, $generalStore } = useNuxtApp()
-let name = ref($userStore.name)
-let email = ref($userStore.email)
+const { $profileStore, $generalStore } = useNuxtApp()
+let name = ref($profileStore.name)
+let email = ref($profileStore.email)
 
 let errors = ref(null)
 
-
+onMounted(async () => {
+    await $profileStore.editProfile();
+})
 const updateProfile = async () => {
     errors.value = null
-
     try {
         $generalStore.isPoccessing = true
-        await $userStore.updateProfile(name.value, email.value);
-        await $userStore.getUser();
+        await $profileStore.updateProfile(name.value, email.value);
+        await $profileStore.getProfile();
         $generalStore.isPoccessing = false;
     } catch (error) {
         $generalStore.isPoccessing = false
@@ -56,7 +57,7 @@ const updateProfile = async () => {
                 <InputError class="mt-2" :message="errors && errors.email ? errors.email[0] : ''" />
             </div>
 
-            <div v-if="true">
+            <div v-if="$profileStore.mustVerifyEmail && $profileStore.mustVerifyEmail.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800">
                     Your email address is unverified.
                     <NuxtLink to="/" method="post" as="button"

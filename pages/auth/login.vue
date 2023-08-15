@@ -3,7 +3,7 @@ const { $axios } = useNuxtApp();
 useHead({
     title: 'Login',
 })
-const { $userStore, $generalStore } = useNuxtApp()
+const { $userStore, $generalStore, $profileStore } = useNuxtApp()
 const router = useRouter()
 
 let email = ref(null)
@@ -17,7 +17,7 @@ const login = async () => {
         $generalStore.isPoccessing = true
         await $userStore.getTokens()
         await $userStore.login(email.value, password.value)
-        await $userStore.getUser()
+        await $profileStore.getProfile()
         $generalStore.isPoccessing = false
         router.push("/dashboard")
 

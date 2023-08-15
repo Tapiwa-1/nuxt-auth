@@ -1,24 +1,25 @@
 <script setup>
 
 import { nextTick, ref } from 'vue';
+const { $generalStore, $profileStore, $userStore } = useNuxtApp()
+const router = useRouter()
+let errors = ref(null)
+let password = ref(null)
+const deleteUser = async () => {
+    errors.value = null
 
-const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
+    try {
+        $generalStore.isPoccessing = true
+        await $profileStore.deleteProfile(password.value)
+        $generalStore.isPoccessing = false
+        $generalStore.showModal = false
+        router.push("/")
+    } catch (error) {
+        $generalStore.isPoccessing = false
+        errors.value = error.response.data.errors
+    }
 
-
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
-
-    nextTick(() => passwordInput.value.focus());
-};
-
-const deleteUser = () => {
-
-};
-
-const closeModal = () => {
-    confirmingUserDeletion.value = false;
-};
+}
 </script>
 
 <template>
@@ -32,9 +33,9 @@ const closeModal = () => {
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <DangerButton @click="$generalStore.showModal = true">Delete Account</DangerButton>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
+        <Modal :show="$generalStore.showModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium ">
                     Are you sure you want to delete your account?
@@ -48,16 +49,17 @@ const closeModal = () => {
                 <div class="mt-6">
                     <InputLabel for="password" value="Password" class="sr-only" />
 
-                    <TextInput id="password" ref="passwordInput" v-model="form.password" type="password"
-                        class="mt-1 block w-3/4" placeholder="Password" @keyup.enter="deleteUser" />
+                    <TextInput id="password" ref="passwordInput" type="password" class="mt-1 block w-3/4"
+                        placeholder="Password" @keyup.enter="deleteUser" v-model:model-value="password" />
 
-                    <InputError message="form.errors.password" class="mt-2" />
+                    <InputError class="mt-2" :message="errors && errors.password ? errors.password[0] : ''" />
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="$generalStore.showModal = false"> Cancel </SecondaryButton>
 
-                    <DangerButton class="ml-3" :class="'opacity-25'" @click="deleteUser">
+                    <DangerButton class="ml-3" @click="deleteUser()">
+                        <Spinner v-if="$generalStore.isPoccessing" />
                         Delete Account
                     </DangerButton>
                 </div>

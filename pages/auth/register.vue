@@ -3,7 +3,7 @@ useHead({
     title: 'Register',
 })
 
-const { $userStore, $generalStore } = useNuxtApp()
+const { $userStore, $generalStore, $profileStore } = useNuxtApp()
 const router = useRouter();
 
 let name = ref(null)
@@ -24,7 +24,7 @@ const register = async () => {
             password.value,
             confirmPassword.value
         )
-        await $userStore.getUser()
+        await $profileStore.getProfile()
         $generalStore.isPoccessing = false;
         router.push("/dashboard");
     } catch (error) {

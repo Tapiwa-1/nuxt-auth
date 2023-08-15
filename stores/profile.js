@@ -5,22 +5,44 @@ const $axios = axios().provide.axios
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
-    id:1,
-    username:'tapiwa-1',
-    email:'tmotsi10@gmail.com',
-    
+    id:null,
+    name:null,
+    email:null,
+    image: null,
+    status:null,
+    mustVerifyEmail:null,
   }),
-  
   actions: {
-    async getProfile(id) {
+    async editProfile(){
+      let res = await $axios.get('/api/get-profile')
+      this.$state.mustVerifyEmail = res.data[0]
+    },
+    async getProfile() {
+      let res = await $axios.get('/api/get-profile')
+      this.$state.id = res.data[0].id
+      this.$state.name = res.data[0].name
+      this.$state.email = res.data[0].email
+      this.$state.image = res.data[0].image
       
     },
+    async updateProfile(name, email) {
+      await $axios.patch('api/update-profile', {
+        name: name,
+        email: email
+      })
+    },
+    async deleteProfile(password) {
+      await $axios.patch('api/destroy-profile',{
+        password: password
+      })
+      this.resetUser()
+    },
     resetUser() {      
-        this.$state.id = ''
-        this.$state.username = ''
-        this.$state.email = ''
-       
-      }
+      this.$state.id = ''
+      this.$state.name = ''
+      this.$state.email = ''
+      this.$state.image = ''
+    }
   },
   persist: true,
 })

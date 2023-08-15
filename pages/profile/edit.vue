@@ -7,10 +7,14 @@ useHead({
     title: 'Edit Profile',
 })
 
+const { $profileStore, $generalStore } = useNuxtApp()
+
 defineProps({
     mustVerifyEmail: Boolean,
     status: String,
 });
+
+
 </script>
 
 <template>
