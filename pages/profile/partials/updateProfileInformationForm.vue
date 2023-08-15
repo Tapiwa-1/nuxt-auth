@@ -17,12 +17,12 @@ onMounted(async () => {
 const updateProfile = async () => {
     errors.value = null
     try {
-        $generalStore.isPoccessing = true
+        $generalStore.updatingProfile = true
         await $profileStore.updateProfile(name.value, email.value);
         await $profileStore.getProfile();
-        $generalStore.isPoccessing = false;
+        $generalStore.updatingProfile = false;
     } catch (error) {
-        $generalStore.isPoccessing = false
+        $generalStore.updatingProfile = false
         errors.value = error.response.data.errors
     }
 }
@@ -74,7 +74,7 @@ const updateProfile = async () => {
             <div class="flex items-center gap-4">
                 <PrimaryButton @click="updateProfile()">Save</PrimaryButton>
 
-                <Transition v-if="$generalStore.isPoccessing" enter-from-class="opacity-0" leave-to-class="opacity-0"
+                <Transition v-if="$generalStore.updatingProfile" enter-from-class="opacity-0" leave-to-class="opacity-0"
                     class="transition ease-in-out">
                     <p class="text-sm text-gray-600">Saving.</p>
                 </Transition>

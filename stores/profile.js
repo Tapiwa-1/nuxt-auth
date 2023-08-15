@@ -31,6 +31,13 @@ export const useProfileStore = defineStore('profile', {
         email: email
       })
     },
+    async changePassword(current_password,password,password_confirmation){
+      await $axios.patch('api/update-password-profile',{
+        current_password: current_password,
+        password:password,
+        password_confirmation:password_confirmation
+      })
+    },
     async deleteProfile(password) {
       await $axios.patch('api/destroy-profile',{
         password: password

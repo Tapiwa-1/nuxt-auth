@@ -6,8 +6,8 @@ useHead({
 </script>
 
 <template>
-    <GuestLayout> 
-       
+    <GuestLayout>
+
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
@@ -20,17 +20,9 @@ useHead({
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                <TextInput id="email" type="email" class="mt-1 block w-full" required autofocus autocomplete="username" />
 
-                <InputError class="mt-2" message="form.errors.email" />
+                <!-- <InputError class="mt-2" message="form.errors.email" /> -->
             </div>
 
             <div class="flex items-center justify-end mt-4">
