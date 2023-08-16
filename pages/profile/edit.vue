@@ -6,7 +6,10 @@ import UpdateProfileInformationForm from './partials/updateProfileInformationFor
 useHead({
     title: 'Edit Profile',
 })
-
+definePageMeta({
+    middleware: ["auth"]
+    // or middleware: 'auth'
+})
 const { $profileStore, $generalStore } = useNuxtApp()
 
 defineProps({

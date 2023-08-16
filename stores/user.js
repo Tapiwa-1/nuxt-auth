@@ -8,7 +8,8 @@ export const useUserStore = defineStore('user', {
     id: '',
     name: '',
     email:'',
-    image: ''
+    image: '',
+    authenticated: false
     
   }),
   
@@ -22,6 +23,7 @@ export const useUserStore = defineStore('user', {
         email: email,
         password: password
       })
+      this.state.authenticated = true
     },
 
     async register(name, email, password, confirmPassword) {
@@ -31,10 +33,10 @@ export const useUserStore = defineStore('user', {
         password: password,
         password_confirmation: confirmPassword
       })
+      this.state.authenticated = true
     },
     
     async logout() {
-
       await $axios.post('/logout')
       this.resetUser()
     },
@@ -43,6 +45,7 @@ export const useUserStore = defineStore('user', {
       this.$state.name = ''
       this.$state.email = ''
       this.$state.image = ''
+      this.state.authenticated = false
     }
   },
   persist: true,
