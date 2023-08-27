@@ -23,7 +23,6 @@ export const useUserStore = defineStore('user', {
         email: email,
         password: password
       })
-      this.state.authenticated = true
     },
 
     async register(name, email, password, confirmPassword) {
@@ -33,7 +32,6 @@ export const useUserStore = defineStore('user', {
         password: password,
         password_confirmation: confirmPassword
       })
-      this.state.authenticated = true
     },
     
     async logout() {

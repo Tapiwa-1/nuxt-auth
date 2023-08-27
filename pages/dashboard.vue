@@ -3,8 +3,8 @@ useHead({
     title: 'Dashboard',
 })
 definePageMeta({
-    // middleware: ["auth"]
-    middleware: 'auth'
+    middleware: ["auth"]
+    // middleware: 'auth'
 })
 </script>
 <template>

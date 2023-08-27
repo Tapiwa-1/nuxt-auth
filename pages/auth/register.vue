@@ -29,7 +29,7 @@ const register = async () => {
         router.push("/dashboard");
     } catch (error) {
         $generalStore.isPoccessing = false;
-        console.log(error)
+        console.log(errors)
         errors.value = error.response.data.errors
     }
 }
