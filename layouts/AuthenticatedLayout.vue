@@ -9,6 +9,7 @@ const router = useRouter()
 
 const logout = () => {
     try {
+        $profileStore.resetUser()
         $userStore.logout()
         router.push('/')
     } catch (error) {

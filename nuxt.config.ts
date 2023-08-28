@@ -5,5 +5,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ]
 })
