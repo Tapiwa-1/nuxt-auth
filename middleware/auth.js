@@ -1,9 +1,9 @@
-import { useUserStore } from "~/stores/user"
+import { useProfileStore } from "~/stores/profile"
 
 export default defineNuxtRouteMiddleware((to, from) => {
-    const userStore = useUserStore()
+    const userProfile = useProfileStore()
     
-    if (to !== '/' && !userStore.id) {
+    if (to !== '/' && !userProfile.id) {
         return navigateTo('/auth/login')
     }
 })
